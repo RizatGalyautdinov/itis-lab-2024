@@ -1,23 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import Header from "./components/header/Header";
+import {FaqItemWrapper} from "./components/faqItem/styled";
+import FaqItem from "./components/faqItem/FaqItem";
+import faqs from "./faqs";
+import {useState} from "react";
+
 
 function App() {
+  const [name, setName] = useState('');
+  const [age, setAge] = useState(0);
+
+  const [form, setForm] = useState({
+    name: '',
+    age: 0,
+  })
+
+  const handleChange = (event) => {
+    setForm(prevState => ({
+      ...prevState,
+      [event.target.name]: event.target.value,
+    }))
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header />
+      <FaqItemWrapper>
+        {faqs.map(({ title, answer }, index) => (
+          <FaqItem title={title} answer={answer} key={index} />
+        ))}
+      </FaqItemWrapper>
+      <form onChange={handleChange}>
+        <label>
+          Имя
+          <input type="text" name="name" value={form.name} />
+        </label>
+
+        <label>
+          Возраст
+          <input type="number" name="age" value={form.age} />
+        </label>
+      </form>
     </div>
   );
 }
